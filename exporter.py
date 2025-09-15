@@ -93,6 +93,9 @@ class DockerSwarmExporter:
         try:
             logger.info("Collecte des métriques Docker Swarm...")
             
+            # Réinitialisation de la gauge avant collecte
+            self.service_update_status.clear()
+            
             # Collecte des informations sur les services
             services = self.client.services.list()
             logger.info(f"Trouvé {len(services)} services")
