@@ -54,6 +54,17 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      - name: Make package public
+        run: |
+          # Attendre que le package soit disponible
+          sleep 10
+          # Rendre le package public via l'API GitHub
+          curl -X PATCH \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/user/packages/container/${{ github.event.repository.name }}" \
+            -d '{"visibility":"public"}' || echo "Package may already be public or API call failed"
+
       - name: Generate summary
         run: |
           echo "## 🚀 Docker Image Published" >> $GITHUB_STEP_SUMMARY
