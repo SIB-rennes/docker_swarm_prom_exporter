@@ -3,7 +3,6 @@ FROM python:3.11-alpine
 # Métadonnées
 LABEL maintainer="Docker Swarm Prometheus Exporter"
 LABEL description="Exporteur de métriques Docker Swarm pour Prometheus"
-LABEL version="1.0.0"
 
 # Variables d'environnement par défaut
 ENV EXPORTER_PORT=8080
@@ -39,10 +38,6 @@ USER exporter
 
 # Exposition du port
 EXPOSE ${EXPORTER_PORT}
-
-# Health check pour vérifier que l'exporteur fonctionne
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:${EXPORTER_PORT}/metrics || exit 1
 
 # Point d'entrée
 CMD ["python", "exporter.py"]
